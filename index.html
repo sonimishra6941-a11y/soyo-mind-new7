@@ -1,1 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#08091b" />
+  <title>SOYO Mind</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f7f7ff;
+      --muted: #a4a8c0;
+      --cyan: #66efff;
+      --purple: #8858ff;
+      --panel: rgba(15, 17, 39, 0.88);
+      --line: rgba(255, 255, 255, 0.12);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 50% 4%, rgba(80, 52, 174, 0.3), transparent 40%),
+        radial-gradient(ellipse at 100% 100%, rgba(18, 83, 171, 0.16), transparent 38%),
+        #08091b;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+
+    .app {
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .ambient {
+      position: fixed;
+      z-index: -1;
+      width: 440px;
+      height: 440px;
+      left: 50%;
+      top: 17%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: rgba(58, 45, 193, 0.14);
+      filter: blur(100px);
+      pointer-events: none;
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      min-height: 100dvh;
+      animation: appear 450ms ease both;
+    }
+
+    .screen.active { display: flex; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(9px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Welcome */
+    .welcome {
+      width: min(100%, 520px);
+      margin: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 48px 28px max(34px, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      border: 1px solid rgba(151, 129, 255, 0.48);
+      border-radius: 18px;
+      color: #fff;
+      background: linear-gradient(145deg, #a46cff, #4a3bd1 70%, #242e81);
+      box-shadow: 0 0 32px rgba(118, 83, 255, 0.4);
+    }
+
+    .brand-mark svg { width: 28px; height: 28px; }
+
+    .welcome-visual {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: min(72vw, 310px);
+      aspect-ratio: 1;
+      margin-top: 20px;
+    }
+
+    .orb-halo {
+      position: absolute;
+      inset: 5%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(102, 74, 255, 0.5), rgba(31, 83, 255, 0.2) 44%, transparent 72%);
+      filter: blur(18px);
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    .orb {
+      position: relative;
+      width: 54%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 34% 25%, #fff 0 5%, #f5f6ff 20%, #d7ddff 48%, #9daaff 75%, #a48bff 100%);
+      box-shadow:
+        inset -12px -18px 30px rgba(100, 89, 205, 0.28),
+        inset 9px 10px 24px rgba(255, 255, 255, 0.9),
+        0 0 34px rgba(142, 135, 255, 0.74),
+        0 0 90px rgba(68, 96, 255, 0.5);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .eye {
+      position: absolute;
+      top: 44%;
+      width: 10%;
+      height: 13%;
+      border-radius: 50%;
+      background: #3940bb;
+      box-shadow: 0 0 10px rgba(56, 64, 187, 0.3);
+    }
+
+    .eye.left { left: 31%; }
+    .eye.right { right: 31%; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.68; transform: scale(0.94); }
+      50% { opacity: 1; transform: scale(1.06); }
+    }
+
+    .welcome-copy { margin-top: 12px; }
+
+    .welcome-copy h1 {
+      margin: 0;
+      font-size: clamp(38px, 9vw, 52px);
+      letter-spacing: -0.055em;
+      font-weight: 720;
+    }
+
+    .welcome-copy p {
+      margin: 10px 0 0;
+      color: #c3c5d7;
+      font-size: 16px;
+    }
+
+    .primary-light {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      width: min(100%, 360px);
+      min-height: 58px;
+      border: 0;
+      border-radius: 999px;
+      color: #11121d;
+      background: #fff;
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .primary-light:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(255,255,255,.16); }
+    .primary-light svg { width: 18px; height: 18px; }
+
+    /* Login */
+    .login-screen {
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 28px 20px;
+    }
+
+    .login-card {
+      width: min(100%, 390px);
+      position: relative;
+      padding: 42px 28px 32px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 28px;
+      background: linear-gradient(155deg, rgba(18, 20, 43, .96), rgba(8, 9, 23, .95));
+      box-shadow: 0 28px 90px rgba(0,0,0,.4);
+      text-align: center;
+    }
+
+    .welcome-ring {
+      width: min(76vw, 250px);
+      aspect-ratio: 1;
+      display: grid;
+      place-content: center;
+      margin: 0 auto 34px;
+      border: 3px solid var(--cyan);
+      border-radius: 50%;
+      box-shadow:
+        0 0 10px var(--cyan),
+        0 0 30px rgba(70, 231, 255, .85),
+        inset 0 0 22px rgba(70, 231, 255, .14);
+      animation: ringGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes ringGlow {
+      0%, 100% { box-shadow: 0 0 10px var(--cyan), 0 0 25px rgba(70,231,255,.65), inset 0 0 18px rgba(70,231,255,.12); }
+      50% { box-shadow: 0 0 16px var(--cyan), 0 0 42px rgba(70,231,255,.9), inset 0 0 26px rgba(70,231,255,.2); }
+    }
+
+    .welcome-ring h1 {
+      margin: 0;
+      font-size: clamp(30px, 8vw, 40px);
+      letter-spacing: .015em;
+    }
+
+    .welcome-ring p {
+      margin: 12px 0 0;
+      color: #b6bed6;
+      font-size: 14px;
+    }
+
+    .login-form { display: grid; gap: 14px; }
+
+    .field-wrap { position: relative; }
+
+    .field-wrap input {
+      width: 100%;
+      height: 58px;
+      padding: 0 17px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 17px;
+      outline: none;
+      color: #fff;
+      background: rgba(255,255,255,.07);
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .field-wrap input::placeholder { color: #a8aabd; }
+
+    .field-wrap input:focus {
+      border-color: rgba(102,239,255,.8);
+      box-shadow: 0 0 0 3px rgba(102,239,255,.1), 0 0 20px rgba(102,239,255,.1);
+    }
+
+    .login-button {
+      width: 100%;
+      min-height: 58px;
+      margin-top: 8px;
+      border: 2px solid var(--cyan);
+      border-radius: 999px;
+      color: var(--cyan);
+      background: rgba(0, 7, 17, .7);
+      box-shadow: 0 0 14px rgba(102,239,255,.65), inset 0 0 16px rgba(102,239,255,.08);
+      font-weight: 750;
+      font-size: 18px;
+      letter-spacing: .06em;
+      cursor: pointer;
+      transition: color 180ms ease, background 180ms ease, transform 180ms ease;
+    }
+
+    .login-button:hover {
+      color: #07101a;
+      background: var(--cyan);
+      transform: translateY(-1px);
+    }
+
+    .login-note {
+      min-height: 20px;
+      margin: 15px 0 0;
+      color: #ff9aaf;
+      font-size: 13px;
+    }
+
+    /* Chat */
+    .chat-screen {
+      width: min(100%, 760px);
+      height: 100vh;
+      height: 100dvh;
+      margin: 0 auto;
+      padding: max(20px, env(safe-area-inset-top)) 22px max(18px, env(safe-area-inset-bottom));
+      flex-direction: column;
+    }
+
+    .chat-header {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      flex: 0 0 auto;
+    }
+
+    .chat-header .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+    }
+
+    .chat-header .brand-mark svg { width: 20px; height: 20px; }
+
+    .chat-header strong { font-size: 15px; letter-spacing: -.02em; }
+    .chat-header span { color: var(--muted); font-size: 12px; }
+
+    .chat-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
+      padding: 24px 0;
+    }
+
+    .chat-orb {
+      position: relative;
+      width: 130px;
+      height: 112px;
+      margin: 0 auto 30px;
+      filter: drop-shadow(0 16px 27px rgba(105, 71, 255, .35));
+      animation: float 4.5s ease-in-out infinite;
+    }
+
+    .chat-orb::before {
+      content: "";
+      position: absolute;
+      inset: 8px 4px;
+      border-radius: 46% 54% 60% 40% / 49% 39% 61% 51%;
+      background:
+        radial-gradient(ellipse at 30% 28%, #fff 0, #e4dcff 18%, transparent 45%),
+        radial-gradient(ellipse at 76% 57%, #6533ee 0, #8b62ff 30%, transparent 61%),
+        linear-gradient(135deg, #c8c6ff, #8872ff 55%, #5833e8);
+      box-shadow: inset -10px -8px 20px rgba(68, 35, 197, .2), inset 7px 5px 15px rgba(255,255,255,.7);
+      transform: rotate(-8deg);
+    }
+
+    .chat-title {
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: left;
+      font-size: clamp(34px, 8vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -.065em;
+      font-weight: 680;
+    }
+
+    .message-list {
+      display: grid;
+      gap: 12px;
+      max-height: 34vh;
+      overflow-y: auto;
+      padding: 20px 2px 6px;
+      scrollbar-width: thin;
+    }
+
+    .message {
+      width: fit-content;
+      max-width: 85%;
+      padding: 12px 15px;
+      border: 1px solid var(--line);
+      border-radius: 18px 18px 18px 5px;
+      color: #e8e9f5;
+      background: rgba(255,255,255,.07);
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .message.user {
+      justify-self: end;
+      border-color: rgba(139, 103, 255, .3);
+      border-radius: 18px 18px 5px 18px;
+      background: rgba(113, 81, 225, .25);
+    }
+
+    .composer {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 9px 8px 18px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px;
+      background: rgba(255,255,255,.075);
+      box-shadow: 0 10px 36px rgba(0,0,0,.18);
+    }
+
+    .composer input {
+      flex: 1;
+      min-width: 0;
+      height: 42px;
+      border: 0;
+      outline: 0;
+      color: #fff;
+      background: transparent;
+      font-size: 14px;
+    }
+
+    .composer input::placeholder { color: #a7a9bc; }
+
+    .send-button {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 50%;
+      color: #11121d;
+      background: #fff;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease;
+    }
+
+    .send-button:hover { transform: scale(1.05); background: #dffbff; }
+    .send-button svg { width: 19px; height: 19px; }
+
+    .prototype-note {
+      margin: 11px 0 0;
+      color: #8589a3;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    @media (max-height: 700px) {
+      .welcome { padding-top: 24px; }
+      .welcome-visual { width: min(54vw, 230px); }
+      .welcome-ring { width: min(62vw, 210px); margin-bottom: 24px; }
+      .login-card { padding-top: 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="ambient" aria-hidden="true"></div>
+
+    <!-- Screen 1: Welcome -->
+    <section class="screen active" id="screen-welcome" aria-label="Welcome">
+      <div class="welcome">
+        <div class="brand-mark" aria-label="SOYO Mind logo">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z" fill="currentColor"/>
+            <path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z" fill="currentColor" opacity=".8"/>
+            <circle cx="5" cy="18" r="1.2" fill="currentColor"/>
+          </svg>
+        </div>
+
+        <div class="welcome-visual" aria-hidden="true">
+          <div class="orb-halo"></div>
+          <div class="orb">
+            <span class="eye left"></span>
+            <span class="eye right"></span>
+          </div>
+        </div>
+
+        <div class="welcome-copy">
+          <h1>SOYO Mind</h1>
+          <p>Your AI companion</p>
+        </div>
+
+        <button class="primary-light" type="button" data-go="login">
+          Get Started
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Screen 2: Login -->
+    <section class="screen" id="screen-login" aria-label="Login">
+      <div class="login-screen">
+        <div class="login-card">
+          <div class="welcome-ring">
+            <h1>WELCOME</h1>
+            <p>Login to your account</p>
+          </div>
+
+          <form class="login-form" id="login-form">
+            <div class="field-wrap">
+              <input id="email" name="email" type="email" placeholder="Email Address" autocomplete="email" required />
+            </div>
+            <div class="field-wrap">
+              <input id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" required />
+            </div>
+            <button class="login-button" type="submit">LOGIN</button>
+          </form>
+          <p class="login-note" id="login-note" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 3: Chat -->
+    <section class="screen" id="screen-chat" aria-label="SOYO Mind chat">
+      <div class="chat-screen">
+        <header class="chat-header">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z" fill="currentColor"/>
+              <path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z" fill="currentColor" opacity=".8"/>
+            </svg>
+          </div>
+          <strong>SOYO Mind</strong>
+          <span>AI companion</span>
+        </header>
+
+        <div class="chat-content">
+          <div class="chat-orb" aria-hidden="true"></div>
+          <h1 class="chat-title">How can I help you today?</h1>
+          <div class="message-list" id="message-list" aria-live="polite" aria-label="Conversation"></div>
+        </div>
+
+        <form class="composer" id="chat-form">
+          <input id="message-input" type="text" placeholder="Message SOYO Mind..." autocomplete="off" aria-label="Message SOYO Mind" />
+          <button class="send-button" type="submit" aria-label="Send message">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h13M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+        <p class="prototype-note">Chat replies will be available when you connect your Gemini API.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const screens = {
+      welcome: document.getElementById("screen-welcome"),
+      login: document.getElementById("screen-login"),
+      chat: document.getElementById("screen-chat")
+    };
+
+    function showScreen(name) {
+      Object.entries(screens).forEach(([key, screen]) => {
+        const active = key === name;
+        screen.classList.toggle("active", active);
+        screen.setAttribute("aria-hidden", String(!active));
+      });
+    }
+
+    document.querySelectorAll("[data-go]").forEach((button) => {
+      button.addEventListener("click", () => showScreen(button.dataset.go));
+    });
+
+    document.getElementById("login-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+      const note = document.getElementById("login-note");
+
+      if (!email.checkValidity() || password.value.trim().length === 0) {
+        note.textContent = "Enter a valid email address and password.";
+        return;
+      }
+
+      // Demo navigation only. Add real authentication separately.
+      note.textContent = "";
+      showScreen("chat");
+    });
+
+    document.getElementById("chat-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const input = document.getElementById("message-input");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const message = document.createElement("div");
+      message.className = "message user";
+      message.textContent = text;
+      document.getElementById("message-list").appendChild(message);
+      input.value = "";
+      message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  </script>
+</body>
+  </html>
