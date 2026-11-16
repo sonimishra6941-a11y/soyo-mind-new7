@@ -14,12 +14,13 @@ body{background:#0f172a;color:#fff;overflow:hidden}
 .sub{color:#94a3b8;margin:10px 0 30px}
 .btn{width:100%;max-width:320px;padding:15px;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;margin:6px 0}
 .btn-p{background:linear-gradient(45deg,#7c3aed,#db2777);color:#fff}
-.btn-w{background:#fff;color:#111}
-input,select{width:100%;max-width:320px;padding:14px;border-radius:12px;border:1px solid #334155;background:#1e293b;color:#fff;margin:6px 0;outline:none}
+.btn-w{background:#fff;color:#111;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-g{background:#fff;color:#111;display:flex;align-items:center;justify-content:center;gap:10px}
+input{width:100%;padding:13px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:#fff;margin:6px 0;outline:none}
 .top{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;background:#1e293b}
 .icon-btn{background:#334155;border:none;color:#fff;width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer}
 .chat{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
-.msg{max-width:80%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.4}
+.msg{max-width:80%;padding:10px 14px;border-radius:16px;font-size:14px}
 .me{align-self:flex-end;background:#7c3aed}
 .ai{align-self:flex-start;background:#334155}
 .bottom{display:flex;gap:8px;padding:10px;background:#1e293b;align-items:center}
@@ -28,7 +29,6 @@ input,select{width:100%;max-width:320px;padding:14px;border-radius:12px;border:1
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99;align-items:center;justify-content:center;padding:20px}
 .modal.open{display:flex}
 .card{background:#1e293b;width:100%;max-width:380px;border-radius:20px;padding:20px;max-height:85vh;overflow-y:auto}
-.card h3{margin-bottom:12px}
 .row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #334155;cursor:pointer}
 #ball{width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#f472b6,#7c3aed);position:fixed;bottom:90px;right:15px;z-index:100;display:none;align-items:center;justify-content:center;font-size:28px;cursor:grab;box-shadow:0 0 25px #a78bfa;animation:pulse 1.2s infinite}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
@@ -36,52 +36,100 @@ input,select{width:100%;max-width:320px;padding:14px;border-radius:12px;border:1
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .grid div{background:#334155;padding:18px 5px;border-radius:14px;text-align:center;cursor:pointer;font-size:13px}
 .lang{padding:8px;border-bottom:1px solid #334155;cursor:pointer}
-body.light{background:#f1f5f9;color:#111}
-body.light .top,body.light .bottom,body.light .card{background:#fff;color:#111}
-body.navy{background:#020617}
+.suggest{background:#f1f5f9;color:#111;border-radius:14px;padding:13px;margin:8px 0;display:flex;gap:10px;align-items:center;cursor:pointer;font-size:14px}
+/* NEUROCODE LOGIN - DIAGONAL SLIDE */
+.login-wrap{width:100%;max-width:720px;height:440px;position:relative;overflow:hidden;border-radius:18px;border:2px solid #00e5ff;box-shadow:0 0 30px #00e5ff;background:#0f172a;display:flex}
+.login-left,.login-right{width:50%;padding:25px;display:flex;flex-direction:column;justify-content:center;text-align:left;transition:.6s}
+.login-panel{position:absolute;top:0;left:0;width:50%;height:100%;background:linear-gradient(135deg,#00bcd4,#00838f);clip-path:polygon(0 0,100% 0,78% 100%,0 100%);display:flex;flex-direction:column;justify-content:center;padding:25px;transition:.6s;z-index:2}
+.login-wrap.signup-mode .login-panel{left:50%;clip-path:polygon(22% 0,100% 0,100% 100%,0 100%);align-items:flex-end;text-align:right}
+.login-panel h2{font-size:22px}
+.login-panel p{font-size:13px;line-height:1.5;margin-top:10px;opacity:.9}
+.form-side{width:50%;padding:25px;display:flex;flex-direction:column;justify-content:center}
+.form-side h3{font-size:20px;margin-bottom:12px}
+.small{font-size:12px;color:#94a3b8;margin-top:10px;text-align:center}
+.small b{color:#00e5ff;cursor:pointer}
+.google-btn{background:#fff;color:#111;border:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+/* CURSOR BUILD */
+#buildOverlay{position:fixed;inset:0;background:#000;z-index:998;display:none;align-items:center;justify-content:center;flex-direction:column}
+#buildOverlay.show{display:flex}
+#buildText{font-size:22px;font-weight:900;letter-spacing:2px;text-align:center;line-height:1.4;padding:20px}
+#buildSub{color:#a78bfa;font-size:13px;margin-top:10px}
+.cursorDot{position:absolute;width:12px;height:12px;border-radius:50%;z-index:1000;pointer-events:none;transition:all .8s ease}
+@media(max-width:600px){.login-wrap{height:520px;flex-direction:column}.login-panel{width:100%;height:42%;clip-path:polygon(0 0,100% 0,100% 80%,0 100%)}.login-wrap.signup-mode .login-panel{left:0;top:58%;clip-path:polygon(0 20%,100% 0,100% 100%,0 100%)}.form-side{width:100%}}
 </style>
 </head>
 <body>
+<div id="buildOverlay"><div id="buildText"></div><div id="buildSub">Cursors are building your app...</div></div>
 
-<!-- 1 GET STARTED -->
-<div id="getStartScreen" class="screen active"><div class="center">
-<div class="logo">SOYO MIND</div><p class="sub">Your Smart AI Friend - Talk, Create, Chat in Any Language</p>
-<button class="btn btn-p" onclick="goLogin()">Get Started →</button>
+<!-- SCREEN 1 GET STARTED -->
+<div id="getStartScreen" class="screen active" style="background:radial-gradient(circle at 50% 30%, #4338ca, #0f172a 70%)">
+<div class="center">
+<div style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#fff,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:0 0 50px #7c3aed">👀</div>
+<div class="logo" style="margin-top:30px;font-size:32px">SOYO Mind</div>
+<p class="sub">Your AI companion</p>
+<button class="btn btn-w" onclick="goLoginWithCursors()">Get Started &nbsp; ›</button>
 </div></div>
 
-<!-- 2 LOGIN -->
+<!-- SCREEN 2 NEUROCODE LOGIN - VIDEO JAISA -->
 <div id="loginScreen" class="screen"><div class="center">
-<h2>Welcome Back</h2><p class="sub">Login to continue</p>
-<input id="userName" placeholder="Enter Your Name">
-<input id="userEmail" placeholder="Enter Email">
-<button class="btn btn-p" onclick="doLogin()">Login</button>
-<button class="btn btn-w" onclick="doLogin()">Continue as Guest</button>
+<h2 style="margin-bottom:15px">The Website:</h2>
+<div class="login-wrap" id="loginWrap">
+  <!-- SLIDING PANEL -->
+  <div class="login-panel" id="slidePanel">
+    <h2 id="panelTitle">WELCOME BACK!</h2>
+    <p id="panelText">Hope, You and your Family Have a Great Day</p>
+  </div>
+  <!-- LOGIN FORM LEFT -->
+  <div class="form-side" id="loginFormSide">
+    <h3>Login</h3>
+    <input id="loginUser" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
+    <button class="btn btn-p" style="max-width:100%" onclick="doLoginWithCursors()">Login</button>
+    <button class="google-btn" onclick="loginWithGoogleCursors()">🅖 Continue with Google</button>
+    <p class="small">Don't have an account? <b onclick="toSignup()">Sign Up</b></p>
+  </div>
+  <!-- SIGNUP FORM RIGHT -->
+  <div class="form-side" id="signupFormSide">
+    <h3>Sign Up</h3>
+    <input id="signUser" placeholder="Username">
+    <input id="signEmail" placeholder="Email">
+    <input id="signPass" type="password" placeholder="Password">
+    <button class="btn btn-p" style="max-width:100%;background:#00bcd4" onclick="doLoginWithCursors()">Register</button>
+    <button class="google-btn" onclick="loginWithGoogleCursors()">🅖 Continue with Google</button>
+    <p class="small">Already have an account? <b onclick="toLogin()">Login</b></p>
+  </div>
+</div>
+<p style="font-size:12px;color:#94a3b8;margin-top:12px">Login sirf 1 baar hoga. Logout karne pe dobara dikhega.</p>
 </div></div>
 
-<!-- 3 DASHBOARD -->
-<div id="dashScreen" class="screen">
-<div class="top"><span style="font-weight:900">✨ Soyo Mind</span><div style="display:flex;gap:6px">
-<button class="icon-btn" onclick="openVoiceChat()" title="Online Voice Chat">🎙️</button>
-<button class="icon-btn" onclick="openModal('settingsModal')">⚙️</button>
-<button class="icon-btn" onclick="logout()">↪</button></div></div>
-<div class="chat" id="chatBox"><div class="msg ai">Hello! I am Soyo Mind. Tell your story or say - Hello, how are you? 😊</div></div>
-<div class="bottom">
-<button class="icon-btn" onclick="openModal('plusModal')">+</button>
-<input id="msgInput" placeholder="Type a message...">
-<button class="send" onclick="sendMsg()">➤</button>
-</div></div>
+<!-- SCREEN 3 DASHBOARD - GOOD MORNING ALEX HATA DIYA -->
+<div id="dashScreen" class="screen" style="background:#fff;color:#111">
+<div class="top" style="background:#fff;color:#111"><span style="font-size:20px">☰</span><span style="font-weight:900">SOYO Mind</span><div style="display:flex;gap:6px">
+<button class="icon-btn" style="background:#f1f5f9;color:#111" onclick="openVoiceChat()">🎙️</button>
+<button class="icon-btn" style="background:#f1f5f9;color:#111" onclick="openModal('settingsModal')">⚙️</button>
+<button class="icon-btn" style="background:#f1f5f9;color:#111" onclick="logout()">↪</button></div></div>
+<div style="padding:15px">
+<div style="text-align:center;margin:10px 0"><div style="width:140px;height:80px;margin:auto;background:linear-gradient(45deg,#a78bfa,#6366f1);border-radius:50% 50% 50% 50%/60% 60% 40% 40%"></div></div>
+<h1 style="font-size:30px;line-height:1.2">How can I<br>help you today?</h1>
+<div class="suggest" onclick="quickAsk('Help me plan my day')">☀️ Help me plan my day</div>
+<div class="suggest" onclick="quickAsk('Explain quantum computing')">✦ Explain quantum computing</div>
+<div class="suggest" onclick="quickAsk('Write a professional email')">✏️ Write a professional email</div>
+<div class="suggest" onclick="quickAsk('Workout plan for beginners')">🏋️ Workout plan for beginners</div>
+</div>
+<div class="chat" id="chatBox"><div class="msg ai" style="background:#f1f5f9;color:#111">Hello! I am Soyo Mind. Tell your story or say - Hello, how are you? 😊</div></div>
+<div class="bottom" style="background:#fff"><button class="icon-btn" style="background:#f1f5f9;color:#111" onclick="openModal('plusModal')">+</button><input id="msgInput" placeholder="Message SOYO Mind..." style="background:#f1f5f9;color:#111"><button class="send" onclick="sendMsg()">➤</button></div>
+</div>
 
 <div id="ball" onclick="openModal('voiceModal')">🎙️</div>
 
-<!-- PLUS MODAL -->
+<!-- MODALS SAME -->
 <div id="plusModal" class="modal"><div class="card"><h3>Choose Option</h3>
 <button class="btn btn-p" onclick="takePhoto()">📷 Camera - Take Photo</button>
 <button class="btn btn-w" onclick="fromGallery()">🖼️ Gallery - From Gallery</button>
 <button class="btn" style="background:#334155;color:#fff" onclick="closeAll()">Close</button></div></div>
 
-<!-- VOICE MODAL -->
 <div id="voiceModal" class="modal"><div class="card"><h3>Online Voice Chat</h3>
-<p style="font-size:13px;color:#94a3b8">Movable Ball is ON. Speak anytime, AI will reply in your selected voice.</p>
+<p style="font-size:13px;color:#94a3b8">Movable Ball is ON. Speak anytime.</p>
 <div class="row" onclick="setVoice('Male Voice - Jarvis Style')"><span>👨 Male Voice</span><span>✓</span></div>
 <div class="row" onclick="setVoice('Female Voice')"><span>👩 Female Voice</span><span>Select</span></div>
 <div class="row" onclick="openModal('addVoiceModal')"><span>➕ Add Voice</span><span>+</span></div>
@@ -89,15 +137,12 @@ body.navy{background:#020617}
 <p id="voiceStatus" style="text-align:center;font-size:13px;margin-top:8px">Current Voice: Male Voice</p>
 <button class="btn" style="background:#334155;color:#fff" onclick="closeAll()">Close</button></div></div>
 
-<!-- ADD VOICE -->
 <div id="addVoiceModal" class="modal"><div class="card"><h3>Add Your Voice</h3>
 <div style="background:#0f172a;padding:16px;border-radius:12px;text-align:center">📝 <b>Tell your story</b><br>or<br><b>Hello, how are you?</b></div>
-<p style="font-size:13px;margin:10px 0">Tap and speak. Your sound will be captured and AI will talk in your voice.</p>
 <button class="btn btn-p" onclick="recordVoice()">🔴 Tap to Speak & Record</button>
 <p id="recordMsg" style="text-align:center;font-size:13px"></p>
 <button class="btn" style="background:#334155;color:#fff" onclick="closeAll()">Done</button></div></div>
 
-<!-- SETTINGS -->
 <div id="settingsModal" class="modal"><div class="card"><h3>Settings</h3>
 <div class="row" onclick="openModal('historyModal')">💬 Chat History <span>›</span></div>
 <div class="row" onclick="openModal('langModal')">🌍 Language <span>›</span></div>
@@ -107,71 +152,84 @@ body.navy{background:#020617}
 <div class="row" onclick="openModal('upgradeModal')">⭐ Upgrade <span>›</span></div>
 <button class="btn" style="background:#334155;color:#fff" onclick="closeAll()">Close</button></div></div>
 
-<!-- HISTORY -->
-<div id="historyModal" class="modal"><div class="card"><h3>Chat History</h3><div id="historyList" style="font-size:13px"></div>
+<div id="historyModal" class="modal"><div class="card"><h3>Chat History</h3><div id="historyList" style="font-size:13px">No Chat Yet</div>
 <button class="btn btn-p" onclick="clearHistory()">🗑️ Delete All History</button>
 <button class="btn" style="background:#334155;color:#fff" onclick="closeAll()">Close</button></div></div>
 
-<!-- LANGUAGE -->
-<div id="langModal" class="modal"><div class="card"><h3>Select Language</h3>
-<div id="langList"></div><button class="btn" style="background:#334155;color:#fff" onclick="closeAll()">Close</button></div></div>
+<div id="langModal" class="modal"><div class="card"><h3>Select Language</h3><div id="langList"></div><button class="btn" style="background:#334155;color:#fff" onclick="closeAll()">Close</button></div></div>
 
-<!-- THEME -->
 <div id="themeModal" class="modal"><div class="card"><h3>Theme</h3>
 <div class="theme-opt" style="background:#fff;color:#111" onclick="setTheme('light')">Light Theme - White</div>
 <div class="theme-opt" style="background:#111;color:#fff" onclick="setTheme('dark')">Dark Theme</div>
 <div class="theme-opt" style="background:#020617;color:#fff" onclick="setTheme('navy')">Navy Blue Dark</div>
-<div class="theme-opt" style="background:#f8fafc;color:#111" onclick="setTheme('light')">White Light</div>
 <button class="btn btn-p" onclick="addThemeGallery()">🖼️ Add Theme From Gallery</button>
 <input type="file" id="themeFile" accept="image/*,video/*" hidden onchange="applyThemeFile(event)">
 <button class="btn" style="background:#334155;color:#fff" onclick="closeAll()">Close</button></div></div>
 
-<!-- UPGRADE -->
 <div id="upgradeModal" class="modal"><div class="card"><h3>⭐ Upgrade</h3>
 <div style="background:#7c3aed;padding:14px;border-radius:12px;margin-bottom:10px"><b>20 Types of Themes</b><p>20 Different Unique Themes</p><button class="btn btn-w" onclick="buy('20 Themes','$2')">Pay $2 - Unlock</button></div>
-<div style="background:#db2777;padding:14px;border-radius:12px"><b>10 Types of Different Voices</b><p>Angry Voice, Sweet Voice, Scared Voice, Happy Voice, Sad Voice, Funny Voice, Romantic Voice, Motivational Voice, Kids Voice, Robot Voice</p><button class="btn btn-w" onclick="buy('10 Voices','$2.6')">Pay $2.6 - Unlock</button></div>
+<div style="background:#db2777;padding:14px;border-radius:12px"><b>10 Types of Different Voices</b><p>Angry, Sweet, Scared, Happy, Sad, Funny, Romantic, Motivational, Kids, Robot</p><button class="btn btn-w" onclick="buy('10 Voices','$2.6')">Pay $2.6 - Unlock</button></div>
 <button class="btn" style="background:#334155;color:#fff;margin-top:10px" onclick="closeAll()">Close</button></div></div>
 
-<!-- CREATE IMAGE -->
 <div id="createModal" class="modal"><div class="card"><h3>Create Image - 10 Types</h3><div class="grid" id="imgGrid"></div>
 <button class="btn btn-p" onclick="openModal('plusModal')">📷 Take Photo / From Gallery</button>
 <button class="btn" style="background:#334155;color:#fff" onclick="closeAll()">Close</button></div></div>
 
 <script>
-let isLogged = localStorage.getItem('soyo_logged');
-let currentVoice = 'Male Voice - Jarvis Style';
+let colors=['#f472b6','#a78bfa','#facc15','#4ade80','#60a5fa','#fb923c','#fff'];
+function runCursorBuild(screenName, nextFn){
+  let overlay=document.getElementById('buildOverlay');
+  let txt=document.getElementById('buildText');
+  overlay.classList.add('show'); txt.innerHTML='';
+  document.querySelectorAll('.cursorDot').forEach(e=>e.remove());
+  let steps=[];
+  if(screenName==='start'){ steps=['BUILDING...','SOYO Mind','GET STARTED']; }
+  if(screenName==='login'){ steps=['BUILDING...','LOGIN SCREEN','CONTINUE WITH GOOGLE']; }
+  if(screenName==='dashboard'){ steps=['BUILDING...','DASHBOARD','HOW CAN I HELP YOU TODAY?']; }
+  let stepIdx=0;
+  for(let i=0;i<60;i++){
+    let d=document.createElement('div'); d.className='cursorDot';
+    d.style.background=colors[i%colors.length];
+    d.style.left=Math.random()*window.innerWidth+'px'; d.style.top=Math.random()*window.innerHeight+'px';
+    document.body.appendChild(d);
+    setInterval(()=>{ d.style.left=Math.random()*window.innerWidth+'px'; d.style.top=Math.random()*window.innerHeight+'px'; }, 700+Math.random()*500);
+  }
+  let stepTimer=setInterval(()=>{ if(stepIdx<steps.length){ txt.innerHTML=steps[stepIdx]; stepIdx++; } }, 800);
+  setTimeout(()=>{
+    clearInterval(stepTimer);
+    document.querySelectorAll('.cursorDot').forEach((d,idx)=>{ d.style.left=(window.innerWidth/2 - 140 + idx*5)+'px'; d.style.top=(window.innerHeight/2 - 40)+'px'; });
+    txt.innerHTML='DEVELOPED BY<br><span style="color:#facc15;font-size:28px">SHASHWAT MISHRA</span>';
+    document.getElementById('buildSub').innerText='All Cursors Together - Made By Shashwat Mishra';
+    setTimeout(()=>{ document.querySelectorAll('.cursorDot').forEach(e=>e.remove()); overlay.classList.remove('show'); if(nextFn) nextFn(); }, 1800);
+  }, 2800);
+}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function goLogin(){ if(localStorage.getItem('soyo_logged')){show('dashScreen');} else {show('loginScreen');} }
-function doLogin(){ localStorage.setItem('soyo_logged','yes'); show('dashScreen'); alert('Login Successful! Welcome to Soyo Mind'); }
-function logout(){ localStorage.removeItem('soyo_logged'); show('getStartScreen'); }
-if(isLogged){ /* first open shows Get Started, login skipped on Get Started click */ }
+window.onload=()=>{ runCursorBuild('start', ()=>{ show('getStartScreen'); }); };
+function goLoginWithCursors(){ runCursorBuild('login', ()=>{ show('loginScreen'); }); }
+function doLoginWithCursors(){ localStorage.setItem('soyo_logged','yes'); runCursorBuild('dashboard', ()=>{ show('dashScreen'); }); }
+function loginWithGoogleCursors(){ localStorage.setItem('soyo_logged','google'); runCursorBuild('dashboard', ()=>{ show('dashScreen'); alert('Continue with Google - Login Successful!'); }); }
+function logout(){ localStorage.removeItem('soyo_logged'); runCursorBuild('start', ()=>{ show('getStartScreen'); }); }
+// NEUROCODE SLIDE LOGIC
+function toSignup(){ document.getElementById('loginWrap').classList.add('signup-mode'); document.getElementById('panelTitle').innerText='WELCOME!'; document.getElementById('panelText').innerText='Hope, You and your Family Have a Great Day'; }
+function toLogin(){ document.getElementById('loginWrap').classList.remove('signup-mode'); document.getElementById('panelTitle').innerText='WELCOME BACK!'; document.getElementById('panelText').innerText='Hope, You and your Family Have a Great Day'; }
 function openModal(id){document.querySelectorAll('.modal').forEach(m=>m.classList.remove('open'));document.getElementById(id).classList.add('open');}
 function closeAll(){document.querySelectorAll('.modal').forEach(m=>m.classList.remove('open'));}
-function sendMsg(){let inp=document.getElementById('msgInput');if(!inp.value.trim())return;let box=document.getElementById('chatBox');box.innerHTML+=`<div class="msg me">${inp.value}</div>`;let q=inp.value;inp.value='';saveHistory(q);setTimeout(()=>{box.innerHTML+=`<div class="msg ai">Nice! You said: "${q}". Tell me more about your story in ${currentVoice} style. 😊</div>`;box.scrollTop=box.scrollHeight;},600);box.scrollTop=box.scrollHeight;}
-function saveHistory(t){let h=JSON.parse(localStorage.getItem('soyo_history')||'[]');h.push(t);localStorage.setItem('soyo_history',JSON.stringify(h));}
-function clearHistory(){localStorage.removeItem('soyo_history');document.getElementById('historyList').innerHTML='History Deleted';alert('Chat History Deleted');}
+function quickAsk(t){document.getElementById('msgInput').value=t;sendMsg();}
+function sendMsg(){let inp=document.getElementById('msgInput');if(!inp.value.trim())return;let box=document.getElementById('chatBox');box.innerHTML+=`<div class="msg me">${inp.value}</div>`;let q=inp.value;inp.value='';setTimeout(()=>{box.innerHTML+=`<div class="msg ai" style="background:#f1f5f9;color:#111">Nice! You said: "${q}". Tell me more 😊</div>`;box.scrollTop=box.scrollHeight;},600);box.scrollTop=box.scrollHeight;}
+function clearHistory(){alert('Chat History Deleted');}
 function openVoiceChat(){document.getElementById('ball').style.display='flex';openModal('voiceModal');}
-function setVoice(v){currentVoice=v;document.getElementById('voiceStatus').innerText='Current Voice: '+v;alert('Voice Changed to '+v);}
-function startListening(){document.getElementById('voiceStatus').innerText='Listening... Speak now...';if('webkitSpeechRecognition' in window){let r=new webkitSpeechRecognition();r.lang='en-US';r.onresult=e=>{document.getElementById('voiceStatus').innerText='You said: '+e.results[0][0].transcript;let u=new SpeechSynthesisUtterance('Hello! I heard you in '+currentVoice);speechSynthesis.speak(u);};r.start();}else{alert('Voice not supported, please type message');}}
+function setVoice(v){document.getElementById('voiceStatus').innerText='Current Voice: '+v;alert('Voice Changed to '+v);}
+function startListening(){document.getElementById('voiceStatus').innerText='Listening... Speak now...';}
 function recordVoice(){document.getElementById('recordMsg').innerText='Recording... Say: Tell your story / Hello, how are you?';setTimeout(()=>{document.getElementById('recordMsg').innerText='✅ Voice Saved! Now AI will talk in your voice.';},2500);}
-function takePhoto(){let i=document.createElement('input');i.type='file';i.accept='image/*';i.capture='camera';i.onchange=e=>{alert('Photo Captured! Auto prompt sent. Your image is creating...');closeAll();};i.click();}
-function fromGallery(){let i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=e=>{alert('Photo Selected from Gallery! Auto prompt sent with image. Image creating...');closeAll();};i.click();}
+function takePhoto(){alert('Photo Captured! Auto prompt sent. Image creating...');closeAll();}
+function fromGallery(){alert('Photo Selected from Gallery! Image creating...');closeAll();}
 function setTheme(t){document.body.className='';if(t!=='dark')document.body.classList.add(t);alert(t+' Theme Applied');}
 function addThemeGallery(){document.getElementById('themeFile').click();}
 function applyThemeFile(e){let f=e.target.files[0];if(!f)return;let url=URL.createObjectURL(f);document.body.style.backgroundImage=`url(${url})`;document.body.style.backgroundSize='cover';alert('Theme Applied from Gallery!');}
-function buy(item,price){alert(item+' - '+price+' Payment Clicked. Money will be cut and feature unlocked. Payment work will be done by you.');}
-// Languages with flags
-let langs=[['🇺🇸 English','en'],['🇮🇳 Hindi','hi'],['🇮🇳 Hinglish','hinglish'],['🇪🇸 Spanish','es'],['🇫🇷 French','fr'],['🇩🇪 German','de'],['🇮🇹 Italian','it'],['🇵🇹 Portuguese','pt'],['🇷🇺 Russian','ru'],['🇨🇳 Chinese','zh'],['🇯🇵 Japanese','ja'],['🇰🇷 Korean','ko'],['🇦🇪 Arabic','ar'],['🇵🇰 Urdu','ur'],['🇧🇩 Bengali','bn'],['🇹🇳 Tamil','ta'],['🇹🇪 Telugu','te'],['🇲🇷 Marathi','mr'],['🇹🇷 Turkish','tr'],['🇮🇩 Indonesian','id']];
+function buy(item,price){alert(item+' - '+price+' Payment Clicked.');}
+let langs=[['🇺🇸 English'],['🇮🇳 Hindi'],['🇮🇳 Hinglish'],['🇪🇸 Spanish'],['🇫🇷 French'],['🇩🇪 German'],['🇯🇵 Japanese'],['🇰🇷 Korean'],['🇦🇪 Arabic'],['🇵🇰 Urdu']];
 document.getElementById('langList').innerHTML=langs.map(l=>`<div class="lang" onclick="alert('Language Changed to ${l[0]}')">${l[0]}</div>`).join('');
 let types=['Anime Style','Realistic Photo','Cartoon','3D Style','Painting','Cinematic','Fantasy','Portrait','Nature','Fashion'];
 document.getElementById('imgGrid').innerHTML=types.map(t=>`<div onclick="openModal('plusModal')">${t}<br><small>Tap to Create</small></div>`).join('');
-// History load
-document.getElementById('historyList').innerHTML=(JSON.parse(localStorage.getItem('soyo_history')||'[]').join('<br>')||'No Chat Yet');
-// Movable Ball drag
 let ball=document.getElementById('ball'),drag=false,dx,dy;
-ball.addEventListener('touchstart',e=>{drag=true;dx=e.touches[0].clientX-ball.offsetLeft;dy=e.touches[0].clientY-ball.offsetTop;});
-ball.addEventListener('touchmove',e=>{if(!drag)return;ball.style.left=(e.touches[0].clientX-dx)+'px';ball.style.top=(e.touches[0].clientY-dy)+'px';ball.style.right='auto';ball.style.bottom='auto';});
-ball.addEventListener('touchend',()=>drag=false);
-</script>
-</body>
-</html>
+ball.addEventListener('touchstart',e=>{drag=true;dx=e.touches[0].clientX-ball.offsetLeft;dy=e.touch
